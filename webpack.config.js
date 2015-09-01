@@ -1,27 +1,54 @@
-var path = require('path');
-var webpack = require('webpack');
+var webpack = require("webpack");
 
-module.exports = {
-  devtool: 'eval',
-  entry: [
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/only-dev-server',
-    './src/index'
-  ],
-  output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/static/'
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
-  ],
-  module: {
-    loaders: [{
-      test: /\.js$/,
-      loaders: ['react-hot', 'babel'],
-      include: path.join(__dirname, 'src')
+module.exports = [{
+    name: "browser",
+    entry: {
+        main: './public/app.js'
+    },
+    output: {
+        path: './public',
+        filename: 'app-bundle.js'
+    },
+    module: {
+        loaders: [{
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader'
+        }, {
+            test: /\.css$/,
+            exclude: /node_modules/,
+            loader: "style-loader!css-loader"
+        }, {
+            test: /\.(eot|woff|ttf|svg|png|jpg)([\?]?.*)$/,
+            exclude: /node_modules/,
+            loader: 'url-loader'
+        }, {
+            test: /\.less$/,
+            exclude: /node_modules/,
+            loader: "style-loader!css-loader!less-loader"
+        }]
+    },
+
+    externals: [{
+        "jquery": "jQuery"
     }]
-  }
-};
+}, {
+    name: "server",
+    entry: {
+        api: './app.js'
+    },
+    output: {
+        path: './',
+        filename: 'app-bundle.js',
+        libraryTarget: 'commonjs2'
+    },
+    module: {
+        loaders: [{
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader'
+        }]
+    },
+    externals: /^[a-z\-0-9_]+$/
+
+}];

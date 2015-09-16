@@ -1,7 +1,5 @@
-
-#!/usr/bin/env node
-import io from 'socket.io';
-import server from './lib/server.js';
+var io  = require('socket.io');
+var server = require('./server/server.js');
 
 process.on('uncaughtException',
     function(err){

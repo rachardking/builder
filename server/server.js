@@ -10,23 +10,20 @@ var proxy = httpProxy.createProxyServer({
 });
 var isProduction = process.env.NODE_ENV === 'production';
 var port = isProduction ? process.env.PORT : 3000;
-var publicPath = path.resolve(__dirname, 'public');
+var publicPath = path.resolve(__dirname, '../', 'public');
 
 
-class Server {
+function Server(systemEnv) {
+     this.systemEnv = systemEnv;
 
-    constructor(systemEnv){
-
-        this.systemEnv = systemEnv;
-
-        let app = this.app = express();
+        var app = this.app = express();
 
         app.use(express.static(publicPath));
         app.post('/invoke', bodyParser.json(), (req, res) => {
             'use strict';
 
-            let methodName = req.body.methodName;
-            let data = req.body.data || {};
+            var methodName = req.body.methodName;
+            var data = req.body.data || {};
             this[methodName](data)
                 .then( response => {
                     res.send({ data: response });
@@ -92,9 +89,9 @@ class Server {
             }
         });
 
-    }
-
 
 }
+
+
 
 module.exports = Server;

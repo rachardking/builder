@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var esprima2 = require('esprima-fb');
 var esprima = require('esprima');
 var babel = require('babel');
@@ -200,3 +201,16 @@ function processData (data) {
 // });
 
 //console.log(Object.keys(babel));
+=======
+var a = function  (argument) {
+    // body...
+}
+
+var b = {
+    [a]: {
+        c:2
+    }
+}
+
+const CALL_API = Symbol('Call API');
+>>>>>>> 394617699f06c8fb464ce1966589f59f4549e609

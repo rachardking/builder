@@ -1,23 +1,6 @@
-// import 'babel-core/polyfill';
-
-// import React from 'react';
-// import { Provider } from 'react-redux';
-// import App from './pages/index/index';
-// import configureStore from './components/configureStore';
-// import 'todomvc-app-css/index.css';
-
-// const store = configureStore();
-
-// React.render(
-//   <Provider store={store}>
-//     {() => <App />}
-//   </Provider>,
-//   document.getElementById('root')
-// );
-
 
 import React from 'react';
-import { Datepicker, message } from 'antd';
+import { Datepicker, message, Menu,  SubMenu} from 'antd';
 
 var App = React.createClass({
   getInitialState() {
@@ -32,10 +15,31 @@ var App = React.createClass({
     });
   },
   render() {
-    return <div style={{width: 400, margin: '100px auto'}}>
-      <Datepicker onSelect={this.handleChange} />
-      <div style={{marginTop: 20}}>当前日期：{this.state.date.toString()}</div>
-    </div>;
+
+    var nav = (
+        <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
+            <Menu.Item key="mail">
+                <div className='logo'></div>
+            </Menu.Item>
+            <Menu.Item key="mail">
+                <i className="anticon anticon-mail"></i>导航一
+            </Menu.Item>
+            <Menu.Item key="app">
+                <i className="anticon anticon-appstore"></i>导航二
+            </Menu.Item>
+            <SubMenu title={<span><i className="anticon anticon-setting"></i>导航 - 子菜单</span>}>
+                <Menu.Item key="setting:1">选项1</Menu.Item>
+                <Menu.Item key="setting:2">选项2</Menu.Item>
+                <Menu.Item key="setting:3">选项3</Menu.Item>
+                <Menu.Item key="setting:4">选项4</Menu.Item>
+            </SubMenu>
+            <Menu.Item key="alipay">
+              <a href="http://www.alipay.com/" target="_blank">导航四 - 链接</a>
+            </Menu.Item>
+      </Menu>
+
+    )
+    return 
   }
 });
 

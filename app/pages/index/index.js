@@ -1,33 +1,23 @@
-import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import Header from '../components/Header';
-import MainSection from '../components/MainSection';
-import * as TodoActions from '../actions/todos';
+import Menu from '../../components/Menu/index'
+import Stage from '../../components/Stage/index'
+import editor from '../../components/Editor/index'
 
-class App extends Component {
-  render() {
-    const { todos, dispatch } = this.props;
-    const actions = bindActionCreators(TodoActions, dispatch);
-
+export default var index = (props) => {
     return (
-      <div>
-        <Header addTodo={actions.addTodo} />
-        <MainSection todos={todos} actions={actions} />
-      </div>
-    );
-  }
-}
+        <header>
+            <a className="logo"></a>
+            <nav>
 
-App.propTypes = {
-  todos: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired
+            </nav>
+        </header>
+        <div className="main-wrapper">
+            <section className="stage">
+
+            </section>
+            <section className="editor">
+
+            </section>
+        </div>
+    )      
+       
 };
-
-function mapStateToProps(state) {
-  return {
-    todos: state.todos
-  };
-}
-
-export default connect(mapStateToProps)(App);

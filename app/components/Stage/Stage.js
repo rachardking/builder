@@ -1,25 +1,14 @@
-'use strict';
 
-var React = require('react/addons');
-var _ = require('lodash');
-var Server = require('../../api/Server.js');
-var DeskPageFrameStore = require('../../store/desk/DeskPageFrameStore.js');
-var DeskPageFrameActions = require('../../action/desk/DeskPageFrameActions.js');
-var FormMixin = require('../application/FormMixin.js');
+import React from 'react';
 
-var Repository = require('../../api/Repository.js');
-var Common = require('../../api/Common.js');
 
-var DeskPageFrame = React.createClass({
-    mixins: [FormMixin],
+export default var Stage = React.createClass({
 
     render: function() {
         return (<iframe {...this.props} src={Repository.getHtmlForDesk()} />);
     },
 
     componentDidMount: function() {
-
-        this.unsubscribe = DeskPageFrameStore.listen(this._changeFrameContent);
 
         var domNode = React.findDOMNode(this);
         domNode.onload = (function(){
@@ -37,14 +26,7 @@ var DeskPageFrame = React.createClass({
         }.bind(this));
 
         Server.onSocketEmit('compilerWatcher.success', function(data){
-            if(data.compiledProcessCount >= 1){
-                if(domNode.contentWindow && domNode.contentWindow.document && domNode.contentWindow.document.body){
-                    this.contentScrollTop = domNode.contentWindow.document.body.scrollTop;
-                } else if(domNode.contentDocument && domNode.contentDocument.documentElement){
-                    this.contentScrollTop = domNode.contentDocument.documentElement.scrollTop;
-                }
-                domNode.src = Repository.getHtmlForDesk();
-            }
+            domNode.src = Repository.getHtmlForDesk();
         }.bind(this));
     },
 
@@ -146,5 +128,3 @@ var DeskPageFrame = React.createClass({
 
 
 });
-
-module.exports = DeskPageFrame;

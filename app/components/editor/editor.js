@@ -1,10 +1,7 @@
-'use strict';
+import React from 'react';
 
-var React = require('react');
 
-var ReactBootstrap = require('react-bootstrap');
-
-var AceEditor = React.createClass({
+export var Editor = React.createClass({
 
     _checkEditor: function (sourceCode) {
         if (!this.editor) {
@@ -73,5 +70,3 @@ var AceEditor = React.createClass({
     }
 
 });
-
-module.exports = AceEditor;

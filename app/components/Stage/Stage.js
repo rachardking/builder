@@ -1,69 +1,45 @@
+import React, { Component, PropTypes } from 'react';
+import classnames from 'classnames';
+import { connect } from 'react-redux';
 
-import React from 'react';
+
+import './stage.less';
 
 
-export default var Stage = React.createClass({
+class Stage extends Component {
+    constructor(props, context) {
+        super(props, context);
+    }
 
-    render: function() {
-        return (<iframe {...this.props} src={Repository.getHtmlForDesk()} />);
-    },
-
-    componentDidMount: function() {
+    componentDidMount() {
 
         var domNode = React.findDOMNode(this);
         domNode.onload = (function(){
             this._renderFrameContent();
         }).bind(this);
 
-        Server.onSocketEmit('compilerWatcher.errors', function(data){
-            var messages = [];
-            _.each(data, function(item){
-                _.each(item, function(message){
-                    messages.push(message);
-                });
-            });
-            this._showModalMessageArray(messages);
-        }.bind(this));
+       
+    }
 
-        Server.onSocketEmit('compilerWatcher.success', function(data){
-            domNode.src = Repository.getHtmlForDesk();
-        }.bind(this));
-    },
-
-    componentWillUnmount: function(){
+    componentWillUnmoun(){
         this.unsubscribe();
         if(this.frameEndpoint) {
             this.frameEndpoint.onComponentDidUpdate = null;
             this.frameEndpoint.onComponentWillUpdate = null;
             this.frameEndpoint  = null;
         }
-    },
+    }
 
-    _renderFrameContent: function() {
+    _renderFrameContent() {
 
         var domNode = React.findDOMNode(this);
         var doc = domNode.contentDocument;
         var win = domNode.contentWindow;
-        if(doc.readyState === 'complete' && win.endpoint && win.endpoint.Page) {
+        if (doc.readyState === 'complete') {
 
-            //console.log('Page is loaded...');
-
-            Repository.setCurrentPageDocument(doc);
-            Repository.setCurrentPageWindow(win);
-
-            //var cssList = Common.getCSSClasses(doc);
-            //console.log(JSON.stringify(cssList, null, 4));
-
-            this.frameEndpoint = win.endpoint;
-            this.frameEndpoint.onComponentDidUpdate = function(){
-                this._mapDomNodes();
-            }.bind(this);
-            this.frameEndpoint.onComponentWillUpdate = function(){
-                DeskPageFrameActions.deselectComponent();
-            };
+            this._mapDomNodes();
+            
             this._changeFrameContent();
-
-            this._hideModalProgress();
 
             if(domNode.contentWindow && domNode.contentWindow.document && domNode.contentWindow.document.body){
                 domNode.contentWindow.document.body.scrollTop = this.contentScrollTop;
@@ -71,28 +47,9 @@ export default var Stage = React.createClass({
                 domNode.contentDocument.documentElement.scrollTop = this.contentScrollTop;
             }
         }
-    },
+    }
 
-    _changeFrameContent: function(){
-        if(this.frameEndpoint){
-            React.addons.TestUtils.findAllInRenderedTree(this.frameEndpoint.Page,
-                function(component){
-                    var props = component.props;
-                    if(props && props['data-umyid'] && props['data-umyid'].length > 0){
-                        var domNode = this.frameEndpoint.Page.findDOMNodeInPage(component);
-                        if(domNode){
-                            $(domNode).off("mousedown.umy");
-                        }
-                    }
-                    return true;
-                }.bind(this)
-            );
-
-            this.frameEndpoint.replaceState(Repository.getCurrentPageModel());
-        }
-    },
-
-    _mapDomNodes: function(){
+    _mapDomNodes(){
         Repository.resetCurrentPageDomNodes();
         React.addons.TestUtils.findAllInRenderedTree(this.frameEndpoint.Page,
             function(component){
@@ -126,5 +83,14 @@ export default var Stage = React.createClass({
         DeskPageFrameActions.didRenderPageFrame();
     }
 
+    render() {
+        const {stageUrl} = this.props;
 
-});
+        return (<iframe {...this.props} src={stageUrl} />); 
+    }
+}
+
+Stage.propTypes = { initialCount: PropTypes.number };
+Stage.defaultProps = { initialCount: 0 };
+
+export default Stage;

@@ -1,23 +1,41 @@
-import Menu from '../../components/Menu/index'
-import Stage from '../../components/Stage/index'
-import editor from '../../components/Editor/index'
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { message, Modal } form 'antd';
+import Menu from '../../components/Menu/index';
+import Stage from '../../components/Stage/index';
+import editor from '../../components/Editor/index';
+import './index.less'
 
-export default var index = (props) => {
-    return (
-        <header>
-            <a className="logo"></a>
-            <nav>
 
-            </nav>
-        </header>
-        <div className="main-wrapper">
-            <section className="stage">
+class Index extends Component {
 
-            </section>
-            <section className="editor">
+    render() {
+        { errorMessage } = this.props.product;
+        //errorMessage && message.success(errorMessage);
+        return (
+            <header>
+                <a className="logo"></a>
+                <Menu></Menu>
+            </header>
+            <div className="main-wrapper">
+                <section className="main">
+                    <Stage></Stage>
+                </section>
+                <section className="side">
+                    <Editor></Editor>
+                </section>
+            </div>
+            <Modal title="第一个 Modal" visible={errorMessage} confirmLoading={this.state.confirmLoading}>
+                {errorMessage}
+            </Modal>
+        )      
+    }
+}
 
-            </section>
-        </div>
-    )      
-       
-};
+function mapStateToProps(state) {
+  return {
+    product: state.product
+  };
+}
+
+export default connect(mapStateToProps)(Index);

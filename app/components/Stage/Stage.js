@@ -23,11 +23,6 @@ class Stage extends Component {
 
     componentWillUnmoun(){
         this.unsubscribe();
-        if(this.frameEndpoint) {
-            this.frameEndpoint.onComponentDidUpdate = null;
-            this.frameEndpoint.onComponentWillUpdate = null;
-            this.frameEndpoint  = null;
-        }
     }
 
     _renderFrameContent() {
@@ -39,8 +34,6 @@ class Stage extends Component {
 
             this._mapDomNodes();
             
-            this._changeFrameContent();
-
             if(domNode.contentWindow && domNode.contentWindow.document && domNode.contentWindow.document.body){
                 domNode.contentWindow.document.body.scrollTop = this.contentScrollTop;
             } else if(domNode.contentDocument && domNode.contentDocument.documentElement){
@@ -55,6 +48,7 @@ class Stage extends Component {
             function(component){
                 var props = component.props;
                 //console.log(props);
+
                 if(props && props['data-umyid'] && props['data-umyid'].length > 0){
                     var dataumyid = props['data-umyid'];
                     var existingPageNode = Repository.getCurrentPageDomNode(dataumyid);
@@ -80,7 +74,6 @@ class Stage extends Component {
                 return true;
             }.bind(this)
         );
-        DeskPageFrameActions.didRenderPageFrame();
     }
 
     render() {
@@ -93,4 +86,5 @@ class Stage extends Component {
 Stage.propTypes = { initialCount: PropTypes.number };
 Stage.defaultProps = { initialCount: 0 };
 
-export default Stage;
+
+export default connect(mapStateToProps)(Stage);

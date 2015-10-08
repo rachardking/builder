@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
+import classnames from 'classnames';
+import { connect } from 'react-redux';
 
+import './editor.less';
 
-export var Editor = React.createClass({
+class Editor extends Component {
 
     _checkEditor: function (sourceCode) {
         if (!this.editor) {
@@ -23,30 +26,24 @@ export var Editor = React.createClass({
         }
         this.editor.focus();
         this.editor.navigateFileEnd();
-    },
-
-    getDefaultProps: function(){
-        return {
-            mode: "ace/mode/javascript"
-        }
-    },
+    }
 
     getSourceCode: function(){
         if(this.editor){
             return this.editor.getSession().getValue();
         }
         return null;
-    },
+    }
 
     handleChange: function(e){
         if(this.props.onChangeText){
             this.props.onChangeText(this.editor.getSession().getValue());
         }
-    },
+    }
 
     componentDidMount: function(){
         this._checkEditor(this.props.sourceCode);
-    },
+    }
 
     componentDidUpdate: function(){
         this._checkEditor(this.props.sourceCode);
@@ -54,14 +51,14 @@ export var Editor = React.createClass({
 
     shouldComponentUpdate(nextProps, nextState){
         return nextProps.sourceName !== this.props.sourceName;
-    },
+    }
 
     componentWillUnmount: function(){
         if(this.editor){
             this.editor.destroy();
             this.editor = null;
         }
-    },
+    }
 
     render: function() {
         return (
@@ -69,4 +66,10 @@ export var Editor = React.createClass({
         );
     }
 
-});
+}
+
+
+operate.propTypes = { initialCount: PropTypes.number };
+operate.defaultProps = { mode: "ace/mode/javascript" };
+
+export default Editor;

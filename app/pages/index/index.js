@@ -22,7 +22,7 @@ class Index extends Component {
                     <Stage></Stage>
                 </section>
                 <section className="side">
-                    <Editor></Editor>
+                    <Operate></Operate>
                 </section>
             </div>
             <Modal title="第一个 Modal" visible={errorMessage} confirmLoading={this.state.confirmLoading}>
